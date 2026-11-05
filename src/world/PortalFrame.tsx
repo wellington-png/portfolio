@@ -77,7 +77,7 @@ export function PortalFrame({ project, placement }: Props) {
         {live ? (
           <mesh>
             <planeGeometry args={[W, H]} />
-            <MeshPortalMaterial ref={portal} events={active} side={DoubleSide} blur={0} resolution={512}>
+            <MeshPortalMaterial ref={portal} events={active && phase !== 'leaving'} side={DoubleSide} blur={0} resolution={512}>
               <ProjectRoom project={project} />
             </MeshPortalMaterial>
           </mesh>
