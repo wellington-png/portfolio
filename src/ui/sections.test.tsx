@@ -10,14 +10,16 @@ describe('sections', () => {
     expect(screen.getByText(profile.bio)).toBeInTheDocument()
   })
 
-  it('ProjectDetail shows stack and external links', () => {
+  it('ProjectDetail shows text, stack, screenshots and the live link', () => {
     const p = projects[0]
     render(<ProjectDetail project={p} />)
     expect(screen.getByRole('heading', { name: p.title })).toBeInTheDocument()
+    expect(screen.getByText(new RegExp(p.tagline))).toBeInTheDocument()
     for (const tech of p.stack) expect(screen.getByText(tech)).toBeInTheDocument()
-    const demo = screen.getByRole('link', { name: /demo/i })
-    expect(demo).toHaveAttribute('href', p.demoUrl)
-    expect(demo).toHaveAttribute('rel', expect.stringContaining('noopener'))
+    for (const img of p.images) expect(screen.getByAltText(img.alt)).toHaveAttribute('src', img.src)
+    const live = screen.getByRole('link', { name: /ver site/i })
+    expect(live).toHaveAttribute('href', p.liveUrl)
+    expect(live).toHaveAttribute('rel', expect.stringContaining('noopener'))
   })
 
   it('SkillsSection lists every skill', () => {

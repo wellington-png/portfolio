@@ -4,14 +4,24 @@ export interface Profile {
   bio: string
 }
 
+export interface ProjectImage {
+  src: string
+  alt: string
+  width: number
+  height: number
+}
+
 export interface Project {
   id: string
   title: string
+  tagline: string
   description: string
+  /** Ex.: "Produto próprio" ou "Feito para cliente" */
+  kind: string
   stack: string[]
-  demoUrl: string
-  repoUrl: string
+  liveUrl: string
   color: string
+  images: ProjectImage[]
 }
 
 export interface Skill {

@@ -15,18 +15,25 @@ export function ProjectDetail({ project }: { project: Project }) {
   return (
     <article className="section" style={{ ['--accent' as string]: project.color }}>
       <h3>{project.title}</h3>
+      <p className="muted">
+        {project.tagline} · {project.kind}
+      </p>
       <p>{project.description}</p>
       <ul className="chips">
         {project.stack.map((t) => (
           <li key={t}>{t}</li>
         ))}
       </ul>
+      <ul className="shots">
+        {project.images.map((img) => (
+          <li key={img.src}>
+            <img src={img.src} alt={img.alt} width={img.width} height={img.height} loading="lazy" />
+          </li>
+        ))}
+      </ul>
       <p className="links">
-        <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-          Demo
-        </a>
-        <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-          Código
+        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+          Ver site
         </a>
       </p>
     </article>

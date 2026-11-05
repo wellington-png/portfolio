@@ -1,0 +1,21 @@
+// Gerado por scripts/gen-shot-dims.mjs — não editar à mão.
+export const shotDims: Record<string, [number, number]> = {
+  'app-appbov-sanidade': [760, 1706],
+  'app-izzi-inicio': [760, 1706],
+  'appbov-animais': [1558, 784],
+  'appbov-calendario': [1558, 784],
+  'appbov-dashboard': [1558, 784],
+  'appbov-reproducao': [1558, 784],
+  'barber-agenda-cliente': [1845, 921],
+  'barber-dashboard-mobile': [376, 823],
+  'barbuz-agenda': [1840, 926],
+  'barbuz-inicio': [1840, 926],
+  'izzi-calendario': [1840, 926],
+  'izzi-curso': [1840, 926],
+  'izzi-dashboard': [1840, 926],
+  'occlo-agenda': [1840, 926],
+  'occlo-anamnese-mobile': [1080, 2424],
+  'occlo-financeiro': [1840, 926],
+  'occlo-prontuario': [1840, 926],
+  'occlo-whatsapp': [1840, 926],
+}

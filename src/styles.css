@@ -113,3 +113,5 @@ h1, h2, h3 { margin: 0 0 0.5rem; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+.shots { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.shots img { width: 100%; height: auto; display: block; border: 1px solid var(--accent); border-radius: 6px; }

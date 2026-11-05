@@ -1,4 +1,6 @@
 export * from './types'
+export { coverOf, imageKind } from './images'
+export type { ImageKind } from './images'
 export { profile } from './profile'
 export { projects } from './projects'
 export { skillGroups } from './skills'
