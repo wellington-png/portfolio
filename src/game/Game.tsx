@@ -11,6 +11,7 @@ import { Arena } from '../world/Arena'
 import { Effects } from '../world/Effects'
 import { QUALITY_SETTINGS } from '../world/quality'
 import { Skyline } from '../world/Skyline'
+import { Zones } from '../zones/Zones'
 
 export default function Game() {
   const quality = useGameStore((s) => s.quality)
@@ -37,6 +38,7 @@ export default function Game() {
         <Suspense fallback={null}>
           <Physics>
             <Arena />
+            <Zones />
             <Vehicle />
           </Physics>
           <Skyline />

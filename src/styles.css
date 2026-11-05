@@ -113,3 +113,16 @@ h1, h2, h3 { margin: 0 0 0.5rem; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
+.zone-label {
+  padding: 4px 10px;
+  border: 1px solid;
+  border-radius: 4px;
+  background: rgba(5, 5, 13, 0.7);
+  font-size: 14px;
+  white-space: nowrap;
+  text-shadow: 0 0 8px currentColor;
+  pointer-events: none;
+}
+.zone-label.visited { opacity: 0.55; }
+.skill-icon { font-size: 18px; pointer-events: none; user-select: none; }
