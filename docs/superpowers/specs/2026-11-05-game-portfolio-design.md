@@ -1,5 +1,7 @@
 # Portfólio em modo game (React + Three.js) — Design
 
+> **Substituído em parte:** a mecânica do carrinho foi rejeitada. A nova mecânica está em `2026-11-05-portal-gallery-design.md`. Stack, visual neon, versão 2D e degradação continuam valendo.
+
 Data: 2026-11-05
 
 ## Objetivo
