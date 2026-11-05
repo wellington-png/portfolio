@@ -3,7 +3,9 @@ import { Canvas } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
 import { Suspense } from 'react'
 import { useGameStore } from '../store/gameStore'
+import { Hud } from '../ui/Hud'
 import { useInteractKeys } from '../ui/useInteractKeys'
+import { ZonePanel } from '../ui/ZonePanel'
 import { CameraRig } from '../vehicle/CameraRig'
 import { useKeyboardInput } from '../vehicle/useKeyboardInput'
 import { Vehicle } from '../vehicle/Vehicle'
@@ -46,6 +48,8 @@ export default function Game() {
         <CameraRig />
         <Effects />
       </Canvas>
+      <Hud />
+      <ZonePanel />
       <Loader />
     </>
   )
