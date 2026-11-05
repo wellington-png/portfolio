@@ -3,6 +3,10 @@ import { Canvas } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
 import { Suspense } from 'react'
 import { useGameStore } from '../store/gameStore'
+import { useInteractKeys } from '../ui/useInteractKeys'
+import { CameraRig } from '../vehicle/CameraRig'
+import { useKeyboardInput } from '../vehicle/useKeyboardInput'
+import { Vehicle } from '../vehicle/Vehicle'
 import { Arena } from '../world/Arena'
 import { Effects } from '../world/Effects'
 import { QUALITY_SETTINGS } from '../world/quality'
@@ -11,6 +15,8 @@ import { Skyline } from '../world/Skyline'
 export default function Game() {
   const quality = useGameStore((s) => s.quality)
   const settings = QUALITY_SETTINGS[quality]
+  useKeyboardInput()
+  useInteractKeys()
 
   return (
     <>
@@ -31,9 +37,11 @@ export default function Game() {
         <Suspense fallback={null}>
           <Physics>
             <Arena />
+            <Vehicle />
           </Physics>
           <Skyline />
         </Suspense>
+        <CameraRig />
         <Effects />
       </Canvas>
       <Loader />
