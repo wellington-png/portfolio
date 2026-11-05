@@ -32,7 +32,7 @@ export function PortalFrame({ project, placement }: Props) {
   const portal = useRef<ThreeElements['portalMaterialImpl']>(null)
   const anchor = useCallback((o: Group | null) => registerPortal(project.id, o), [project.id])
 
-  // sala viva só no portal em hover ou em uso (limite de GPU)
+  // sala viva: em hover só com hoverPreview ligado; sempre quando o portal está ativo (limite de GPU)
   const live = active || (hovered && hoverPreview)
 
   useCursor(hovered && phase === 'hub')
@@ -79,7 +79,13 @@ export function PortalFrame({ project, placement }: Props) {
         {live ? (
           <mesh>
             <planeGeometry args={[W, H]} />
-            <MeshPortalMaterial ref={portal} events={active && phase !== 'leaving'} side={DoubleSide} blur={0} resolution={512}>
+            <MeshPortalMaterial
+              ref={portal}
+              events={active && phase !== 'leaving'}
+              side={DoubleSide}
+              blur={0}
+              resolution={512}
+            >
               <ProjectRoom project={project} />
             </MeshPortalMaterial>
           </mesh>
@@ -104,6 +110,9 @@ export function PortalFrame({ project, placement }: Props) {
             e.stopPropagation()
             hoverProject(project.id)
           }}
+          onPointerMove={() => {
+            if (canInteract() && useGameStore.getState().hoveredProject !== project.id) hoverProject(project.id)
+          }}
           onPointerOut={() => {
             if (useGameStore.getState().hoveredProject === project.id) hoverProject(null)
           }}
@@ -117,15 +126,20 @@ export function PortalFrame({ project, placement }: Props) {
           <meshBasicMaterial transparent opacity={0} depthWrite={false} />
         </mesh>
 
-        <Html position={[0, H / 2 + 0.6, 0.1]} center zIndexRange={[5, 0]} style={{ pointerEvents: 'none' }}>
-          <div className={`portal-label${hovered ? ' hovered' : ''}`} style={{ color: project.color, borderColor: project.color }}>
-            <strong>
-              {visited ? '✓ ' : ''}
-              {project.title}
-            </strong>
-            {hovered && <span>{project.tagline}</span>}
-          </div>
-        </Html>
+        {phase === 'hub' && (
+          <Html position={[0, H / 2 + 0.6, 0.1]} center zIndexRange={[5, 0]} style={{ pointerEvents: 'none' }}>
+            <div
+              className={`portal-label${hovered ? ' hovered' : ''}`}
+              style={{ color: project.color, borderColor: project.color }}
+            >
+              <strong>
+                {visited ? '✓ ' : ''}
+                {project.title}
+              </strong>
+              {hovered && <span>{project.tagline}</span>}
+            </div>
+          </Html>
+        )}
       </group>
     </group>
   )

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { projects } from '../content'
 import { useGameStore } from '../store/gameStore'
 
@@ -8,7 +9,14 @@ export function ProjectHud() {
   const stepImage = useGameStore((s) => s.stepImage)
   const leaveProject = useGameStore((s) => s.leaveProject)
 
+  const backRef = useRef<HTMLButtonElement>(null)
   const project = projects.find((p) => p.id === activeProject)
+  const visible = phase === 'room' && !!project
+
+  useEffect(() => {
+    if (visible) backRef.current?.focus()
+  }, [visible])
+
   if (phase !== 'room' || !project) return null
 
   const count = project.images.length
@@ -44,7 +52,7 @@ export function ProjectHud() {
         <button className="btn" aria-label="Próxima imagem" onClick={() => stepImage(1, count)}>
           →
         </button>
-        <button className="btn btn-primary" onClick={leaveProject}>
+        <button ref={backRef} className="btn btn-primary" onClick={leaveProject}>
           Voltar
         </button>
       </div>

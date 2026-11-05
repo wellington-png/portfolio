@@ -15,7 +15,7 @@ export function StartScreen() {
           Versão rápida (2D)
         </button>
       </div>
-      <p className="muted small">WASD / setas para dirigir · Espaço freia · E abre · R reinicia</p>
+      <p className="muted small">Passe o mouse nos portais · clique para entrar · Esc volta</p>
     </main>
   )
 }

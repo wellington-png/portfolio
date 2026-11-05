@@ -5,7 +5,7 @@ import { Vector3 } from 'three'
 import { projects } from '../content'
 import { parallaxOffset } from '../lib/parallax'
 import { useGameStore } from '../store/gameStore'
-import { CAMERA_FOV, HUB_CAMERA, ROOM_ENTRY, ROOM_OVERVIEW } from './hallLayout'
+import { CAMERA_FOV, HUB_CAMERA, hubCameraZ, ROOM_ENTRY, ROOM_OVERVIEW } from './hallLayout'
 import { SMOOTH } from './motion'
 import { getPortalObject } from './portalRegistry'
 import { fitDistance, screenPlacements, type ScreenPlacement } from './roomLayout'
@@ -30,8 +30,14 @@ export function CameraRig() {
 
     if (!inRoom) {
       // salão (e volta da sala): parallax suave pelo mouse
-      pos.set(HUB_CAMERA.position[0] + p.x * 0.9, HUB_CAMERA.position[1] + p.y * 0.35, HUB_CAMERA.position[2])
-      target.set(HUB_CAMERA.lookAt[0] + p.x * 0.6, HUB_CAMERA.lookAt[1] + p.y * 0.2, HUB_CAMERA.lookAt[2])
+      // na volta ('leaving') sem parallax, para a câmera conseguir chegar na pose
+      const k = s.phase === 'leaving' ? 0 : 1
+      pos.set(
+        HUB_CAMERA.position[0] + p.x * 0.9 * k,
+        HUB_CAMERA.position[1] + p.y * 0.35 * k,
+        hubCameraZ(size.width / size.height, projects.length),
+      )
+      target.set(HUB_CAMERA.lookAt[0] + p.x * 0.6 * k, HUB_CAMERA.lookAt[1] + p.y * 0.2 * k, HUB_CAMERA.lookAt[2])
     } else {
       let localPos: Triple = ROOM_ENTRY.position
       let localLook: Triple = ROOM_ENTRY.lookAt

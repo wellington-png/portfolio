@@ -1,4 +1,4 @@
-import { PORTAL_WIDTH, portalPlacements } from './hallLayout'
+import { HUB_CAMERA, PORTAL_WIDTH, hubCameraZ, portalPlacements } from './hallLayout'
 
 describe('portalPlacements', () => {
   it('returns one placement per portal', () => {
@@ -30,5 +30,29 @@ describe('portalPlacements', () => {
     const [only] = portalPlacements(1)
     expect(only.position[0]).toBeCloseTo(0)
     expect(only.rotationY).toBeCloseTo(0)
+  })
+})
+
+describe('hubCameraZ', () => {
+  it('keeps the default pose on desktop', () => {
+    expect(hubCameraZ(16 / 9)).toBe(HUB_CAMERA.position[2])
+  })
+
+  it('pulls back on portrait phones, capped at 16', () => {
+    const z = hubCameraZ(390 / 844)
+    expect(z).toBeGreaterThan(10)
+    expect(z).toBeLessThanOrEqual(16)
+  })
+
+  it('never increases with aspect and stays within [6, 16]', () => {
+    const aspects = [0.3, 0.46, 0.6, 0.8, 1, 1.4, 1.78, 2.4, 3]
+    let prev = Infinity
+    for (const a of aspects) {
+      const z = hubCameraZ(a)
+      expect(z).toBeLessThanOrEqual(prev)
+      expect(z).toBeLessThanOrEqual(16)
+      expect(z).toBeGreaterThanOrEqual(6)
+      prev = z
+    }
   })
 })

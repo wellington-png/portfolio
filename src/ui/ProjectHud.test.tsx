@@ -40,4 +40,9 @@ describe('ProjectHud', () => {
     await userEvent.click(screen.getByRole('button', { name: /voltar/i }))
     expect(useGameStore.getState().phase).toBe('leaving')
   })
+
+  it('focuses the back button when the HUD appears', () => {
+    render(<ProjectHud />)
+    expect(screen.getByRole('button', { name: /voltar/i })).toHaveFocus()
+  })
 })

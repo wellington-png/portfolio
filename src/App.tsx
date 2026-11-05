@@ -4,7 +4,7 @@ import { useGameStore } from './store/gameStore'
 import { GameErrorBoundary } from './ui/GameErrorBoundary'
 import { StartScreen } from './ui/StartScreen'
 
-// A cena 3D e a física só são baixadas quando o jogador aperta Start.
+// A cena 3D só é baixada quando o jogador aperta Start.
 const Game = lazy(() => import('./game/Game'))
 
 export default function App() {

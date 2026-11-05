@@ -27,6 +27,22 @@ export function portalPlacements(count: number): PortalPlacement[] {
   })
 }
 
+/** Z da câmera no salão para que os portais das pontas caibam na largura (retrato exige recuar). */
+export function hubCameraZ(aspect: number, count = 4): number {
+  const placements = portalPlacements(count)
+  let halfExtent = 0
+  let outerZ = 0
+  for (const p of placements) {
+    const ext = Math.abs(p.position[0]) + PORTAL_WIDTH / 2 + 0.6
+    if (ext > halfExtent) {
+      halfExtent = ext
+      outerZ = p.position[2]
+    }
+  }
+  const required = outerZ + halfExtent / (Math.tan((CAMERA_FOV * Math.PI) / 360) * aspect)
+  return Math.min(Math.max(HUB_CAMERA.position[2], required), 16)
+}
+
 /** Pose da câmera no salão (coordenadas do mundo). */
 export const HUB_CAMERA = {
   position: [0, 1.7, 6],
