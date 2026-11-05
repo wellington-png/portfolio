@@ -34,7 +34,8 @@ Unidades isoladas, cada uma com um propósito:
 - `RigidBody` do Rapier com collider de caixa; quatro rodas apenas visuais.
 - Aceleração/freio aplicam impulso no eixo frontal; direção aplica torque em Y proporcional à velocidade; amortecimento lateral ajustável controla a derrapagem; espaço = freio de mão.
 - Hook `useControls()` unifica teclado (WASD/setas) e joystick virtual e devolve `{ throttle, steer, brake }`. A física não conhece a origem do input.
-- Reset ao último ponto seguro (tecla `R` e automático ao cair do mapa ou virar).
+- Rotações em X/Z travadas (só gira em Y), então o carrinho não vira.
+- Reset ao último ponto seguro (tecla `R` e automático ao cair do mapa).
 - Efeitos: faróis neon, rastro de luz, partículas ao derrapar.
 
 ## Câmera
