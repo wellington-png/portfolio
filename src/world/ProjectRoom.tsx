@@ -1,13 +1,16 @@
-import { Grid } from '@react-three/drei'
+import { Grid, Sparkles } from '@react-three/drei'
 import { useMemo } from 'react'
 import { Color } from 'three'
 import type { Project } from '../content'
+import { useGameStore } from '../store/gameStore'
+import { QUALITY_SETTINGS } from './quality'
 import { ROOM_FLOOR_Y } from './roomLayout'
 import { RoomScreens } from './RoomScreens'
 
 /** Sala temática do projeto, em coordenadas locais do portal. */
 export function ProjectRoom({ project }: { project: Project }) {
   const bg = useMemo(() => `#${new Color(project.color).multiplyScalar(0.07).getHexString()}`, [project.color])
+  const sparks = useGameStore((s) => QUALITY_SETTINGS[s.quality].sparks)
 
   return (
     <>
@@ -29,6 +32,7 @@ export function ProjectRoom({ project }: { project: Project }) {
         infiniteGrid
       />
       <RoomScreens project={project} />
+      {sparks && <Sparkles count={60} scale={[14, 5, 10]} position={[0, 0.5, -4]} size={3} speed={0.25} color={project.color} />}
     </>
   )
 }

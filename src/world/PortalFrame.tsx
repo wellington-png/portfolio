@@ -10,6 +10,7 @@ import { SMOOTH } from './motion'
 import { NeonMaterial } from './NeonMaterial'
 import { registerPortal } from './portalRegistry'
 import { ProjectRoom } from './ProjectRoom'
+import { QUALITY_SETTINGS } from './quality'
 import { TextureBoundary } from './TextureBoundary'
 
 const BAR = 0.12
@@ -24,6 +25,7 @@ export function PortalFrame({ project, placement }: Props) {
   const active = useGameStore((s) => s.activeProject === project.id)
   const visited = useGameStore((s) => s.visited.includes(project.id))
   const phase = useGameStore((s) => s.phase)
+  const hoverPreview = useGameStore((s) => QUALITY_SETTINGS[s.quality].hoverPreview)
   const hoverProject = useGameStore((s) => s.hoverProject)
   const enterProject = useGameStore((s) => s.enterProject)
   const inner = useRef<Group>(null)
@@ -31,7 +33,7 @@ export function PortalFrame({ project, placement }: Props) {
   const anchor = useCallback((o: Group | null) => registerPortal(project.id, o), [project.id])
 
   // sala viva só no portal em hover ou em uso (limite de GPU)
-  const live = active || hovered
+  const live = active || (hovered && hoverPreview)
 
   useCursor(hovered && phase === 'hub')
 

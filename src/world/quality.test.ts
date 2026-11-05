@@ -18,5 +18,8 @@ describe('quality', () => {
     expect(QUALITY_SETTINGS.medium.buildings).toBeGreaterThan(QUALITY_SETTINGS.low.buildings)
     expect(QUALITY_SETTINGS.low.bloom).toBe(false)
     expect(QUALITY_SETTINGS.low.sparks).toBe(false)
+    expect(QUALITY_SETTINGS.high.hoverPreview).toBe(true)
+    expect(QUALITY_SETTINGS.medium.hoverPreview).toBe(true)
+    expect(QUALITY_SETTINGS.low.hoverPreview).toBe(false)
   })
 })

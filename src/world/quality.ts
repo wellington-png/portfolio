@@ -16,10 +16,11 @@ export interface QualitySettings {
   buildings: number
   trails: boolean
   sparks: boolean
+  hoverPreview: boolean
 }
 
 export const QUALITY_SETTINGS: Record<Quality, QualitySettings> = {
-  high: { dpr: [1, 2], bloom: true, buildings: 80, trails: true, sparks: true },
-  medium: { dpr: [1, 1.5], bloom: true, buildings: 40, trails: true, sparks: true },
-  low: { dpr: 1, bloom: false, buildings: 20, trails: false, sparks: false },
+  high: { dpr: [1, 2], bloom: true, buildings: 80, trails: true, sparks: true, hoverPreview: true },
+  medium: { dpr: [1, 1.5], bloom: true, buildings: 40, trails: true, sparks: true, hoverPreview: true },
+  low: { dpr: 1, bloom: false, buildings: 20, trails: false, sparks: false, hoverPreview: false },
 }
