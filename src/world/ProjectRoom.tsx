@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { Color } from 'three'
 import type { Project } from '../content'
 import { ROOM_FLOOR_Y } from './roomLayout'
+import { RoomScreens } from './RoomScreens'
 
 /** Sala temática do projeto, em coordenadas locais do portal. */
 export function ProjectRoom({ project }: { project: Project }) {
@@ -27,6 +28,7 @@ export function ProjectRoom({ project }: { project: Project }) {
         fadeStrength={1.2}
         infiniteGrid
       />
+      <RoomScreens project={project} />
     </>
   )
 }
