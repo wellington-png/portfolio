@@ -1,24 +1,28 @@
-import { lazy, Suspense } from 'react'
+import { useEffect } from 'react'
+import { CleanLanding } from './clean/CleanLanding'
 import { Fallback2D } from './fallback2d/Fallback2D'
+import { Launcher } from './launcher/Launcher'
 import { useGameStore } from './store/gameStore'
-import { GameErrorBoundary } from './ui/GameErrorBoundary'
+import { ThemeWipe } from './theme/ThemeSwitch'
+import { useThemeStore } from './theme/themeStore'
 import { StartScreen } from './ui/StartScreen'
-
-// A cena 3D só é baixada quando o jogador aperta Start.
-const Game = lazy(() => import('./game/Game'))
 
 export default function App() {
   const mode = useGameStore((s) => s.mode)
-  const setMode = useGameStore((s) => s.setMode)
+  const theme = useThemeStore((s) => s.theme)
+  const clean = theme === 'clean'
 
-  if (mode === '2d') return <Fallback2D />
-  if (mode === 'menu') return <StartScreen />
+  // Launcher e versão 2D só existem nos temas escuros; o Clean vale só na landing.
+  useEffect(() => {
+    if (clean && mode !== 'menu') useThemeStore.getState().switchTheme('rdr')
+  }, [clean, mode])
 
   return (
-    <GameErrorBoundary onError={() => setMode('2d', 'Não foi possível carregar o mundo 3D. Você está vendo a versão rápida.')}>
-      <Suspense fallback={<div className="loading">Carregando…</div>}>
-        <Game />
-      </Suspense>
-    </GameErrorBoundary>
+    <>
+      {mode === '2d' && <Fallback2D />}
+      {mode === 'menu' && (clean ? <CleanLanding /> : <StartScreen />)}
+      {mode === 'play' && <Launcher />}
+      <ThemeWipe />
+    </>
   )
 }

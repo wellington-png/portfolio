@@ -2,9 +2,13 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { initialGameState, useGameStore } from '../store/gameStore'
 import { TopMenu } from './TopMenu'
+import { resetThemeForTests } from '../theme/themeStore'
 
 describe('TopMenu', () => {
-  beforeEach(() => useGameStore.setState(initialGameState))
+  beforeEach(() => {
+    resetThemeForTests()
+    useGameStore.setState(initialGameState)
+  })
 
   it('opens the info panels', async () => {
     render(<TopMenu />)
@@ -20,9 +24,16 @@ describe('TopMenu', () => {
     expect(useGameStore.getState().mode).toBe('2d')
   })
 
-  it('is hidden inside a project', () => {
-    useGameStore.setState({ phase: 'room', activeProject: 'barbuz' })
+  it('shows the shortcut keys and the mode toggle', () => {
     render(<TopMenu />)
-    expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Sobre mim' })).toHaveAttribute('aria-keyshortcuts', 'A')
+    expect(screen.getByRole('group', { name: 'Modo visual' })).toBeInTheDocument()
+  })
+
+  it('goes back to the start screen from the brand button', async () => {
+    useGameStore.setState({ mode: 'play' })
+    render(<TopMenu />)
+    await userEvent.click(screen.getByRole('button', { name: /voltar ao início/i }))
+    expect(useGameStore.getState().mode).toBe('menu')
   })
 })

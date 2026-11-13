@@ -1,125 +1,90 @@
+import { projects, stepsOf } from '../content'
 import { initialGameState, useGameStore } from './gameStore'
 
 const s = () => useGameStore.getState()
 
-describe('gameStore', () => {
+describe('gameStore (launcher)', () => {
   beforeEach(() => useGameStore.setState(initialGameState))
 
-  it('starts in the menu, in the hub, with nothing active', () => {
+  it('starts on the menu, on the shelf, with the first project selected', () => {
     expect(s().mode).toBe('menu')
-    expect(s().phase).toBe('hub')
-    expect(s().activeProject).toBeNull()
-    expect(s().hoveredProject).toBeNull()
-    expect(s().focusedImage).toBeNull()
-    expect(s().panel).toBeNull()
-    expect(s().visited).toEqual([])
+    expect(s().view).toBe('shelf')
+    expect(s().selected).toBe(0)
   })
 
-  it('hoverProject only works in the hub', () => {
-    s().hoverProject('barbuz')
-    expect(s().hoveredProject).toBe('barbuz')
-    s().hoverProject(null)
-    useGameStore.setState({ phase: 'room' })
-    s().hoverProject('occlo')
-    expect(s().hoveredProject).toBeNull()
+  it('setMode resets the tour and closes panels but keeps the choice and achievements', () => {
+    s().select(2)
+    s().unlock(projects[2].id, 0)
+    s().openTour()
+    s().openPanel('about')
+    s().setMode('play', 'oi')
+    expect(s()).toMatchObject({ mode: 'play', notice: 'oi', panel: null, view: 'shelf', step: 0, region: 0 })
+    expect(s().selected).toBe(2)
+    expect(s().unlocked[projects[2].id]).toEqual([0])
   })
 
-  it('enterProject starts the dive and records the project as visited once', () => {
-    s().hoverProject('barbuz')
-    s().enterProject('barbuz')
-    expect(s().phase).toBe('entering')
-    expect(s().activeProject).toBe('barbuz')
-    expect(s().hoveredProject).toBeNull()
-    expect(s().focusedImage).toBeNull()
-    expect(s().visited).toEqual(['barbuz'])
-    useGameStore.setState({ phase: 'hub', activeProject: null })
-    s().enterProject('barbuz')
-    expect(s().visited).toEqual(['barbuz'])
+  it('selection wraps around the shelf', () => {
+    s().moveSelection(-1)
+    expect(s().selected).toBe(projects.length - 1)
+    s().moveSelection(1)
+    expect(s().selected).toBe(0)
+    s().select(projects.length + 1)
+    expect(s().selected).toBe(1)
   })
 
-  it('enterProject is ignored outside the hub or with a panel open', () => {
-    useGameStore.setState({ phase: 'room' })
-    s().enterProject('occlo')
-    expect(s().activeProject).toBeNull()
-    useGameStore.setState({ phase: 'hub', panel: 'about' })
-    s().enterProject('occlo')
-    expect(s().activeProject).toBeNull()
+  it('opens and closes the tour', () => {
+    s().openTour()
+    expect(s()).toMatchObject({ view: 'tour', step: 0, region: 0, playing: true })
+    s().closeTour()
+    expect(s().view).toBe('shelf')
   })
 
-  it('finishEnter goes entering -> room only', () => {
-    s().finishEnter()
-    expect(s().phase).toBe('hub')
-    s().enterProject('barbuz')
-    s().finishEnter()
-    expect(s().phase).toBe('room')
+  it('steps and regions stay inside their bounds', () => {
+    s().openTour()
+    const steps = stepsOf(projects[0])
+    s().moveStep(-1)
+    expect(s().step).toBe(0)
+    s().goStep(99)
+    expect(s().step).toBe(steps.length - 1)
+    s().moveRegion(1)
+    s().moveRegion(1)
+    s().moveRegion(1)
+    s().moveRegion(1)
+    s().moveRegion(1)
+    expect(s().region).toBe(steps[s().step].focuses.length - 1)
+    s().moveRegion(-1)
+    s().moveRegion(-1)
+    s().moveRegion(-1)
+    s().moveRegion(-1)
+    s().moveRegion(-1)
+    expect(s().region).toBe(0)
   })
 
-  it('leaveProject only works from the room and clears the image focus', () => {
-    s().enterProject('barbuz')
-    s().leaveProject()
-    expect(s().phase).toBe('entering')
-    s().finishEnter()
-    s().focusImage(2)
-    s().leaveProject()
-    expect(s().phase).toBe('leaving')
-    expect(s().focusedImage).toBeNull()
+  it('advance walks every region of every step and then stops playing', () => {
+    s().openTour()
+    const steps = stepsOf(projects[0])
+    const total = steps.reduce((n, st) => n + st.focuses.length, 0)
+    for (let i = 0; i < total - 1; i++) s().advance()
+    expect(s().step).toBe(steps.length - 1)
+    expect(s().region).toBe(steps[steps.length - 1].focuses.length - 1)
+    expect(s().playing).toBe(true)
+    s().advance()
+    expect(s().playing).toBe(false)
   })
 
-  it('finishLeave returns to the hub and clears the active project', () => {
-    s().enterProject('barbuz')
-    s().finishEnter()
-    s().leaveProject()
-    s().finishLeave()
-    expect(s().phase).toBe('hub')
-    expect(s().activeProject).toBeNull()
+  it('unlock records each screen once', () => {
+    s().unlock('barbuz', 1)
+    s().unlock('barbuz', 1)
+    s().unlock('barbuz', 0)
+    expect(s().unlocked.barbuz).toEqual([1, 0])
   })
 
-  it('focusImage and stepImage only work in the room', () => {
-    s().focusImage(1)
-    s().stepImage(1, 4)
-    expect(s().focusedImage).toBeNull()
-    s().enterProject('barbuz')
-    s().finishEnter()
-    s().stepImage(1, 4)
-    expect(s().focusedImage).toBe(0)
-    s().stepImage(-1, 4)
-    expect(s().focusedImage).toBe(3)
-    s().focusImage(null)
-    expect(s().focusedImage).toBeNull()
-  })
-
-  it('openPanel only works in the hub; closePanel clears it', () => {
-    s().hoverProject('barbuz')
+  it('toggles playing and panels', () => {
+    s().togglePlaying()
+    expect(s().playing).toBe(false)
     s().openPanel('skills')
     expect(s().panel).toBe('skills')
-    expect(s().hoveredProject).toBeNull()
     s().closePanel()
     expect(s().panel).toBeNull()
-    useGameStore.setState({ phase: 'room' })
-    s().openPanel('about')
-    expect(s().panel).toBeNull()
-  })
-
-  it('setMode resets navigation and stores the notice', () => {
-    s().enterProject('barbuz')
-    s().setMode('2d', 'aviso')
-    expect(s().mode).toBe('2d')
-    expect(s().notice).toBe('aviso')
-    expect(s().phase).toBe('hub')
-    expect(s().activeProject).toBeNull()
-    s().setMode('menu')
-    expect(s().notice).toBeNull()
-  })
-
-  it('lowers and raises quality', () => {
-    s().lowerQuality()
-    expect(s().quality).toBe('medium')
-    s().lowerQuality()
-    s().lowerQuality()
-    expect(s().quality).toBe('low')
-    s().raiseQuality()
-    expect(s().quality).toBe('medium')
-    s().setQuality('high')
-    expect(s().quality).toBe('high')
   })
 })

@@ -1,7 +1,11 @@
 export interface Profile {
   name: string
   title: string
+  /** Frase curta que apresenta você no topo do site */
+  pitch: string
   bio: string
+  /** Caminho em /public. Troque pela sua foto (ex.: /eu.jpg). */
+  photo: string
 }
 
 export interface ProjectImage {
@@ -26,6 +30,7 @@ export interface Project {
 
 export interface Skill {
   name: string
+  /** Nome de um ícone de ui/Icon */
   icon: string
 }
 

@@ -17,7 +17,7 @@ export const projects: Project[] = [
     kind: 'Produto próprio',
     stack: ['Django', 'DRF', 'PostgreSQL', 'Celery', 'Next.js', 'Firebase Auth'],
     liveUrl: 'https://barbuz.com.br',
-    color: '#ff2bd6',
+    color: '#b5452a',
     images: [
       shot('barbuz-agenda', 'Barbuz: agenda mensal e semanal com filtro por barbeiro'),
       shot('barbuz-inicio', 'Barbuz: painel inicial com faturamento do dia e do mês'),
@@ -34,7 +34,7 @@ export const projects: Project[] = [
     kind: 'Produto próprio',
     stack: ['Django', 'DRF', 'PostgreSQL', 'Celery', 'Redis', 'Next.js', 'Firebase Auth'],
     liveUrl: 'https://occlo.com.br',
-    color: '#00f0ff',
+    color: '#3f7f86',
     images: [
       shot('occlo-agenda', 'Occlo: agenda do dia com uma coluna por dentista'),
       shot('occlo-prontuario', 'Occlo: prontuário do paciente com odontograma'),
@@ -52,7 +52,7 @@ export const projects: Project[] = [
     kind: 'Produto próprio',
     stack: ['Django', 'DRF', 'PostgreSQL', 'Celery', 'Redis', 'Next.js', 'Flutter'],
     liveUrl: 'https://appbov.com.br',
-    color: '#39ff88',
+    color: '#6b8f3f',
     images: [
       shot('appbov-dashboard', 'AppBov: a fazenda num relance'),
       shot('appbov-animais', 'AppBov: ficha de cada animal com busca e filtros'),
@@ -70,7 +70,7 @@ export const projects: Project[] = [
     kind: 'Feito para cliente',
     stack: ['Django', 'DRF', 'PostgreSQL', 'Celery', 'LiveKit', 'Flutter'],
     liveUrl: 'https://diae.com.br',
-    color: '#9d4dff',
+    color: '#7a4a8a',
     images: [
       shot('izzi-dashboard', 'Diaê: painel do aluno'),
       shot('izzi-calendario', 'Diaê: calendário semanal de aulas ao vivo'),
