@@ -35,7 +35,7 @@
 .cl-alt { background: var(--bg-2); }
 .cl-head h2 { margin: 0 0 14px; font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.12; }
 .cl-head p { margin: 0; font-size: 1.02rem; line-height: 1.65; max-width: 36ch; }
-#projetos .cl-head { margin-bottom: 56px; }
+#projetos .cl-head { margin-bottom: 56px; position: static; }
 #projetos .cl-head p { max-width: 56ch; }
 @media (max-width: 700px) { .cl-sec { padding: 64px 0; } }
 
